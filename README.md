@@ -14,19 +14,27 @@ where
 - $BV(\Omega)$ is the set of functions with bounded variation over the domain $\Omega$.
 - $\hat{u}:  \Omega \subset \mathbb{R}^2 \to \mathbb{R}$ is the denoised image or unknown clean image we want to recover. 
 - $f: \Omega \subset \mathbb{R}^2 \to \mathbb{R}$ is the noisy image.
-- $E: (\Omega\to \mathbb{R})\to \mathbb{R}$ is an Energy Functional.
-- $\int_{\Omega}\|\nabla u\|dx$ is the total variation of $u$.  
+- $E: (\Omega\to \mathbb{R})\to \mathbb{R}$, $E(u)=\int_\Omega\left(\|\nabla u\|-\frac{\lambda}{2}(u-f)\right)dx$ is an Energy Functional.
+- $\int_{\Omega}\|\nabla u\|dx$ is the total variation of $u$.
+- $L(x,u,\nabla u) = \|\nabla u\|-\frac{\lambda}{2}(u-f)$  
 
 When $\lambda \to 0$, the output will remove fine details and cause staircasing effect. However, when $\lambda \to \infty$, the output will be very close to the original image and more noise remains.
 ### Solution of the minimization problem
 From [Calculus of Variation](https://en.wikipedia.org/wiki/Calculus_of_variations), the Euler-LAgrange Equation for ROF model is:
-$$\nabla\cdot \left(\frac{1}{\|\nabla u\|}\nabla u \right) = \lambda (u-f)$$ 
+$$\frac{\partial L}{\partial u} - \nabla \cdot \frac{\partial L}{\partial (\nabla u)}=0$$
+$$\lambda (u-f)-\nabla\cdot \left(\frac{1}{\|\nabla u\|}\nabla u \right)$$ 
 where
 - $c=\frac{1}{\|\nabla u\|}$ is the diffusivity term, which is small at an edge(where $\|\nabla u\|$ is large) i.e. diffusion is stopped across edges. 
 - $\lambda (u-f)$: This terms pulls the solution $u$ back towards original data $f$.
 ### Discretization
 
-The Euler-Lagrange equation is discretized using finite differences. The image is represented as a grid of pixels, and the derivatives are approximated using central differences. The resulting system of equations is solved using the Gauss-Seidel method, which is an iterative method for solving linear systems. 
+The Euler-Lagrange equation is discretized using finite differences. The image is represented as a grid of pixels, and the derivatives are approximated using FDM. The resulting system of equations is solved using the Gauss-Seidel method, which is an iterative method for solving linear systems. 
+- Forward differences to compute gradient:
+$$(\partial_x u)_{i+\frac{1}{2}, j} \approx u_{i+1, j} - u_{i, j}$$
+$$(\partial_y u)_{i, j+\frac{1}{2}} \approx u_{i, j+1} - u_{i, j}$$
+- Computing Magnitude:
+$$\|(\nabla u)_{i+\frac{1}{2}, j}\|\epsilon = \sqrt{(u_{i+1,j} - u_{i,j})^2 + (\text{average }y)^2 + \epsilon}$$
+
 ### Advantages and Limitations
 #### Advantages
 Advantages include edge preservation (does not blur edges like linear filters), well posed model (has solution for weak formulation) and Foundation for Advanced Models (Inspired variational methods in image processing).
