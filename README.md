@@ -22,7 +22,7 @@ When $\lambda \to 0$, the output will remove fine details and cause staircasing 
 ### Solution of the minimization problem
 From [Calculus of Variation](https://en.wikipedia.org/wiki/Calculus_of_variations), the Euler-LAgrange Equation for ROF model is:
 $$\frac{\partial L}{\partial u} - \nabla \cdot \frac{\partial L}{\partial (\nabla u)}=0$$
-$$\lambda (u-f)-\nabla\cdot \left(\frac{1}{\|\nabla u\|}\nabla u \right)$$ 
+$$\lambda (u-f)-\nabla\cdot \left(\frac{1}{\|\nabla u\|}\nabla u \right)=0$$ 
 where
 - $c=\frac{1}{\|\nabla u\|}$ is the diffusivity term, which is small at an edge(where $\|\nabla u\|$ is large) i.e. diffusion is stopped across edges. 
 - $\lambda (u-f)$: This terms pulls the solution $u$ back towards original data $f$.
@@ -39,4 +39,4 @@ $$\|(\nabla u)_{i+\frac{1}{2}, j}\|\epsilon = \sqrt{(u_{i+1,j} - u_{i,j})^2 + (\
 #### Advantages
 Advantages include edge preservation (does not blur edges like linear filters), well posed model (has solution for weak formulation) and Foundation for Advanced Models (Inspired variational methods in image processing).
 #### Limitations
-Limitations includes staircasing effect (piecewise constant regions, even in areas that should be smoothly varying), loss of texture (can oversmooth and remove fine-scale textures), and computational complexity (requires solving a PDE, which can be computationally expensive).  
+Limitations includes staircasing effect (piecewise constant regions, even in areas that should be smoothly varying), loss of texture (can oversmooth and remove fine-scale textures), and computational complexity (requires solving a PDE, which can be computationally expensive).
